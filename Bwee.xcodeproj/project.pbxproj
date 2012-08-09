@@ -8,7 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		EC8C8A4E15D2E496009612B8 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC8C8A4D15D2E496009612B8 /* main.cpp */; };
-		EC8C8A5015D2E496009612B8 /* Bwee.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = EC8C8A4F15D2E496009612B8 /* Bwee.1 */; };
+		EC8C8A5A15D2EBD6009612B8 /* SimpleSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC8C8A5915D2EBD6009612B8 /* SimpleSocket.cpp */; };
+		ECE3296915D309AA001948F5 /* IRCSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECE3296815D309AA001948F5 /* IRCSession.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -18,7 +19,6 @@
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
-				EC8C8A5015D2E496009612B8 /* Bwee.1 in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
@@ -27,7 +27,12 @@
 /* Begin PBXFileReference section */
 		EC8C8A4915D2E496009612B8 /* Bwee */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Bwee; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC8C8A4D15D2E496009612B8 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		EC8C8A4F15D2E496009612B8 /* Bwee.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Bwee.1; sourceTree = "<group>"; };
+		EC8C8A5615D2E4D2009612B8 /* SimpleSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleSocket.h; sourceTree = "<group>"; };
+		EC8C8A5715D2E521009612B8 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		EC8C8A5815D2E7F8009612B8 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
+		EC8C8A5915D2EBD6009612B8 /* SimpleSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimpleSocket.cpp; sourceTree = "<group>"; };
+		ECE3296615D30996001948F5 /* IRCSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRCSession.h; sourceTree = "<group>"; };
+		ECE3296815D309AA001948F5 /* IRCSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IRCSession.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,7 +66,12 @@
 			isa = PBXGroup;
 			children = (
 				EC8C8A4D15D2E496009612B8 /* main.cpp */,
-				EC8C8A4F15D2E496009612B8 /* Bwee.1 */,
+				EC8C8A5615D2E4D2009612B8 /* SimpleSocket.h */,
+				EC8C8A5715D2E521009612B8 /* Common.h */,
+				EC8C8A5815D2E7F8009612B8 /* Util.h */,
+				EC8C8A5915D2EBD6009612B8 /* SimpleSocket.cpp */,
+				ECE3296615D30996001948F5 /* IRCSession.h */,
+				ECE3296815D309AA001948F5 /* IRCSession.cpp */,
 			);
 			path = Bwee;
 			sourceTree = "<group>";
@@ -118,6 +128,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				EC8C8A4E15D2E496009612B8 /* main.cpp in Sources */,
+				EC8C8A5A15D2EBD6009612B8 /* SimpleSocket.cpp in Sources */,
+				ECE3296915D309AA001948F5 /* IRCSession.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,6 +214,7 @@
 				EC8C8A5515D2E496009612B8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
