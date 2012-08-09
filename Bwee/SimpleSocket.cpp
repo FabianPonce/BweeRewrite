@@ -23,7 +23,7 @@ SimpleSocket::SimpleSocket(std::string pHost, uint32 pPort)
 	m_fd = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, 0, 0,0);
 #endif
 
-    if(m_fd < 0 || m_fd == INVALID_SOCKET) { // windows used a uint, need to check both < 0, and INVALID_SOCKET for cross-platform compat.
+    if(m_fd < 0 || m_fd == ~0) { // windows used a uint, need to check both < 0, and INVALID_SOCKET for cross-platform compat.
         m_fd = 0; // out of sockets on the host?
         return;
     }
