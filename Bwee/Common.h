@@ -11,10 +11,14 @@
 
 using namespace std;
 
+#ifndef WIN32
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
 #include <netinet/in.h>
+#else
+#include <WinSock2.h>
+#endif
 
 // current platform and compiler
 #define PLATFORM_WIN32 0

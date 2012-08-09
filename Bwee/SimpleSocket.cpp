@@ -1,17 +1,35 @@
 #include "Common.h"
 
+#ifdef WIN32
+bool SIMPLESOCKET_WINSOCK_INIT = false;
+#endif
+
 SimpleSocket::SimpleSocket(std::string pHost, uint32 pPort)
 {
+#ifndef WIN32
     m_fd = socket(AF_INET, SOCK_STREAM, 0);
-    if(m_fd < 0) {
+#else
+	if( !SIMPLESOCKET_WINSOCK_INIT )
+	{
+		SIMPLESOCKET_WINSOCK_INIT = true;
+		WSADATA info;
+		int e = WSAStartup(MAKEWORD(2,2), &info);
+		if(e != 0)
+		{
+			m_fd = 0;
+			return; // unable to initialize WinSock2 library
+		}
+	}
+	m_fd = WSASocket(AF_INET, SOCK_STREAM, IPPROTO_TCP, 0, 0,0);
+#endif
+
+    if(m_fd < 0 || m_fd == INVALID_SOCKET) { // windows used a uint, need to check both < 0, and INVALID_SOCKET for cross-platform compat.
         m_fd = 0; // out of sockets on the host?
         return;
     }
     
     struct sockaddr_in remote_addr;
-    struct hostent *server;
-    
-    server = gethostbyname(pHost.c_str());
+    struct hostent *server = gethostbyname(pHost.c_str());
     if(!server)
     {
         m_fd = 0; // can't connect to a host we can't look up.
@@ -19,9 +37,15 @@ SimpleSocket::SimpleSocket(std::string pHost, uint32 pPort)
     }
     
     memset(&remote_addr, 0, sizeof(remote_addr));
-    remote_addr.sin_family = AF_INET;
+#ifdef WIN32
+	remote_addr.sin_family = server->h_addrtype;
+	memcpy(&remote_addr.sin_addr.s_addr, server->h_addr_list[0], server->h_length);
+    remote_addr.sin_port = htons(pPort);
+#else
+	remote_addr.sin_family = AF_INET;
     memcpy((void*)server->h_addr, &remote_addr.sin_addr.s_addr, server->h_length);
     remote_addr.sin_port = htons(pPort);
+#endif
     
     if (connect(m_fd,(struct sockaddr *) &remote_addr,sizeof(remote_addr)) < 0) {
         m_fd = 0; 
@@ -32,8 +56,12 @@ SimpleSocket::SimpleSocket(std::string pHost, uint32 pPort)
 SimpleSocket::~SimpleSocket()
 {
     if(m_fd)
+#ifndef WIN32
         close(m_fd);
-    
+#else
+		closesocket(m_fd);
+#endif
+
     m_fd = 0;
 }
 
@@ -49,7 +77,11 @@ bool SimpleSocket::sendLine(std::string pLine)
     
     pLine.append("\n");
     
+#ifndef WIN32
     int n = write(m_fd, pLine.c_str(), (int)pLine.size());
+#else
+	int n = send(m_fd, pLine.c_str(), (int)pLine.size(), 0);
+#endif
     if(n < 0)
         return false;
     
@@ -70,7 +102,6 @@ bool SimpleSocket::hasLine()
         m_fd = 0;
         return false;
     } else if(res > 0) {
-        std::cout << "Got input";
         m_buffer.append(buf, res);
     }
     

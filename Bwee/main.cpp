@@ -12,7 +12,6 @@ int main(int argc, const char * argv[])
     {
         std::cout << "Could not connect!" << std::endl;
         return 0;
-        
     }
     
     if(sock.sendLine("this is a test!"))
@@ -30,6 +29,10 @@ int main(int argc, const char * argv[])
             break;
         }
     }
+
+#ifdef WIN32
+	WSACleanup();
+#endif
     
     return 0;
 } 

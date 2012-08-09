@@ -39,7 +39,11 @@ public:
     
     
 protected:
+#ifndef WIN32
     int m_fd;
+#else
+	SOCKET m_fd;
+#endif
     std::string m_buffer;
 };
 
