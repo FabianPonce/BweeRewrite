@@ -8,6 +8,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <map>
 
 using namespace std;
 
@@ -86,9 +87,10 @@ typedef uint32_t DWORD;
 #endif
 
 
-
+#include "MessageFactory.h"
 #include "SimpleSocket.h"
 #include "Util.h"
+#include "IRCSession.h"
 
 
 #endif

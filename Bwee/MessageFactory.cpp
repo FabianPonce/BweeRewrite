@@ -1,0 +1,48 @@
+#include "Common.h"
+
+IRCMessage* MessageFactory::Pong(const char* serverList)
+{
+	return new IRCMessage("PONG", serverList);
+}
+
+IRCMessage* MessageFactory::SetNickName(const char* pNickName)
+{
+	return new IRCMessage("NICK", pNickName);
+}
+
+IRCMessage* MessageFactory::User(const char* pUserName, const char* pHostName, const char* pServerName, const char* pRealName)
+{
+	IRCMessage* msg = new IRCMessage;
+	msg->command = "USER";
+	msg->trailing = pRealName;
+	msg->params = pUserName;
+	msg->params.append(" ");
+	msg->params.append(pHostName);
+	msg->params.append(" ");
+	msg->params.append(pServerName);
+
+	return msg;
+}
+
+IRCMessage* MessageFactory::Join(const char* channel, const char* key /* = "" */)
+{
+	IRCMessage* msg = new IRCMessage;
+	msg->command = "JOIN";
+	msg->params = channel;
+	if( strlen(key) > 0 )
+	{
+		msg->params.append(" ");
+		msg->params.append(key);
+	}
+
+	return msg;
+}
+
+IRCMessage* MessageFactory::Quit(const char* pReason)
+{
+	IRCMessage* msg = new IRCMessage;
+	msg->command = "QUIT";
+	msg->params = " ";
+	msg->trailing = pReason;
+	return msg;
+}

@@ -51,6 +51,13 @@ SimpleSocket::SimpleSocket(std::string pHost, uint32 pPort)
         m_fd = 0; 
         // connection failed!
     }
+
+	struct timeval tv;
+	tv.tv_sec = 3;
+	tv.tv_usec = 0;
+
+	if( setsockopt(m_fd, SOL_SOCKET, SO_RCVTIMEO, (char*)&tv, sizeof(tv)) == -1 )
+		m_fd = 0;
 }
 
 SimpleSocket::~SimpleSocket()
@@ -90,6 +97,11 @@ bool SimpleSocket::sendLine(std::string pLine)
 
 bool SimpleSocket::hasLine()
 {
+	// HACK: This is duplicate code! This is here so that the recv() call will not block indefinitely
+	// when there is still data to be read! FIXME
+	if( m_buffer.find("\n") != string::npos )
+		return true;
+
     int res;
     char buf[4096];
     /*
@@ -116,5 +128,9 @@ std::string SimpleSocket::readLine()
     size_t loc = m_buffer.find("\n");
     std::string line = m_buffer.substr(0, loc);
     m_buffer.erase(0, loc+1); // +1 to remove the \n as well!
+
+	if(line[line.size()-1] == '\r')
+		line = line.substr(0, line.size()-1);
+
     return line;
 }
