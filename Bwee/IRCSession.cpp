@@ -5,6 +5,7 @@ IRCSession::IRCSession(std::string pServer, uint32 pPort)
 	// Setup the message mappings
 	ADD_MESSAGEHANDLER("PING", &IRCSession::HandlePing);
 	ADD_MESSAGEHANDLER("001", &IRCSession::Handle001);
+	ADD_MESSAGEHANDLER("PRIVMSG", &IRCSession::HandlePrivmsg);
 
 	m_socket = new SimpleSocket(pServer, pPort);
 
@@ -13,7 +14,7 @@ IRCSession::IRCSession(std::string pServer, uint32 pPort)
 
 IRCSession::~IRCSession()
 {
-	SendIRCMessage(MessageFactory::Quit(Util::getVersionString().c_str()));
+	SendMessage(MessageFactory::Quit(Util::getVersionString().c_str()));
 
 	delete m_socket;
 	m_socket = NULL;
@@ -22,6 +23,7 @@ IRCSession::~IRCSession()
 void IRCSession::Parse(std::string pMessage)
 {
 	std::cout << pMessage << std::endl;
+
 	/*
 	 * Any message we receive will be in the following format:
 	 *	:<prefix> <command> <params> :<trailing>
@@ -35,7 +37,8 @@ void IRCSession::Parse(std::string pMessage)
 	{
 		// Read in the prefix
 		prefixOffset = pMessage.find(' ');
-		message.prefix = pMessage.substr(1, prefixOffset);
+		message.rawPrefix = pMessage.substr(1, prefixOffset-1);
+		message.prefix = new IRCMessagePrefix(message.rawPrefix);
 
 		// increment prefixOffset only if there was a prefix, so that it points to the next word
 		++prefixOffset; 
@@ -71,10 +74,10 @@ void IRCSession::Update()
 	 * If we're at this point we haven't sent anything into the socket
 	 * initialize the connection with NICK and USER.
 	 */
-	SendIRCMessage(MessageFactory::SetNickName("Bwee"));
-	SendIRCMessage(MessageFactory::User("Bwee", "localhost", "localhost", "Bwee"));
+	SendMessage(MessageFactory::NickName("Bwee"));
+	SendMessage(MessageFactory::User("Bwee", "localhost", "localhost", "Bwee"));
 
-	while(true)
+	while(m_socket->isConnected() || m_socket->hasLine())
 	{
 		if( m_socket->hasLine() )
 		{
@@ -85,13 +88,13 @@ void IRCSession::Update()
 	}
 }
 
-void IRCSession::SendIRCMessage(IRCMessage* pMessage)
+void IRCSession::SendMessage(IRCMessage* pMessage)
 {
 	m_socket->sendLine(pMessage->toString());
 	delete pMessage;
 }
 
-void IRCSession::SendIRCMessage(IRCMessage& pMessage)
+void IRCSession::SendMessage(IRCMessage& pMessage)
 {
 	m_socket->sendLine(pMessage.toString());
 }

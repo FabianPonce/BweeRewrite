@@ -5,7 +5,7 @@ IRCMessage* MessageFactory::Pong(const char* serverList)
 	return new IRCMessage("PONG", serverList);
 }
 
-IRCMessage* MessageFactory::SetNickName(const char* pNickName)
+IRCMessage* MessageFactory::NickName(const char* pNickName)
 {
 	return new IRCMessage("NICK", pNickName);
 }

@@ -3,16 +3,60 @@
 
 #include "Common.h"
 
-#define SESSION_UPDATE_RESOLUTION 10
+#define SESSION_UPDATE_RESOLUTION 100
 
 #define ADD_MESSAGEHANDLER(code,method) \
 	m_messageMap.insert( make_pair(code, method) );
 
 class IRCSession;
 
+struct IRCMessagePrefix
+{
+	/*
+	 * This structure represents the optional prefix at the head of a message:
+	 *	ie: nick!user@c-1-2-3-4.hsd1.nj.comcast.net
+	 */
+	std::string nickOrServerName;
+	std::string userName;
+	std::string hostName;
+
+	IRCMessagePrefix(std::string rawPrefix)
+	{
+		size_t exclPos = rawPrefix.find('!');
+		if( exclPos != string::npos )
+		{
+			// This is a message from another client, relayed via the server.
+			nickOrServerName = rawPrefix.substr(0, exclPos);
+			size_t atPos = rawPrefix.find('@');
+			userName = rawPrefix.substr(exclPos+1,atPos-exclPos-1);
+			hostName = rawPrefix.substr(atPos+1);
+		} else {
+			// This is a server-based message.
+			nickOrServerName = rawPrefix;
+			userName = "";
+			hostName = rawPrefix;
+		}
+	}
+
+	IRCMessagePrefix(const char* pNickOrServer, const char* pUserName, const char* pHostName)
+	{
+		nickOrServerName = pNickOrServer;
+		userName = pUserName;
+		hostName = pHostName;
+	}
+
+	std::string toString()
+	{
+		std::stringstream ss;
+		ss << nickOrServerName << "!" << userName << "@" << hostName;
+		return ss.str();
+	}
+};
+
 struct IRCMessage
 {
-	std::string prefix;
+	IRCMessagePrefix* prefix;
+	std::string rawPrefix;
 
 	std::string command;
 	std::string params;
@@ -22,16 +66,23 @@ struct IRCMessage
 	{
 		command = pCommand;
 		params = pParams;
+		prefix = NULL;
 	}
 
 	IRCMessage()
 	{
+		prefix = NULL;
+	}
 
+	~IRCMessage()
+	{
+		if(prefix)
+			delete prefix;
 	}
 
 	bool hasPrefix()
 	{
-		return prefix.size() != 0;
+		return rawPrefix.size() != 0;
 	}
 
 	bool hasTrailing()
@@ -43,7 +94,7 @@ struct IRCMessage
 	{
 		std::stringstream msg;
 		if( hasPrefix() )
-			msg << ":" << prefix << " ";
+			msg << ":" << rawPrefix << " ";
 
 		msg << command << " " << params;
 
@@ -77,12 +128,13 @@ protected:
 	void Parse(std::string pMessage);
 	void HandleMessage(IRCMessage* pMessage);
 
-	void SendIRCMessage(IRCMessage* pMessage);
-	void SendIRCMessage(IRCMessage& pMessage);
+	void SendMessage(IRCMessage* pMessage);
+	void SendMessage(IRCMessage& pMessage);
 
 	// Message Handlers
 	void HandlePing(IRCMessage& recvData);
 	void Handle001(IRCMessage& recvData); // 001: Successful Registration (http://www.mirc.net/raws/?view=001)
+	void HandlePrivmsg(IRCMessage& recvData);
 
 	SimpleSocket* m_socket;
 

@@ -9,7 +9,7 @@ class MessageFactory
 {
 public:
 
-	static IRCMessage* SetNickName(const char* pNickName);
+	static IRCMessage* NickName(const char* pNickName);
 
 	/* 
 	 * Constructs a PONG reply.
