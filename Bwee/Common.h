@@ -17,6 +17,7 @@ using namespace std;
 #include <sys/socket.h>
 #include <netdb.h>
 #include <netinet/in.h>
+#define Sleep(x) sleep(x)
 #else
 #include <WinSock2.h>
 #endif

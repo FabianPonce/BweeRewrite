@@ -10,6 +10,8 @@
 		EC8C8A4E15D2E496009612B8 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC8C8A4D15D2E496009612B8 /* main.cpp */; };
 		EC8C8A5A15D2EBD6009612B8 /* SimpleSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EC8C8A5915D2EBD6009612B8 /* SimpleSocket.cpp */; };
 		ECE3296915D309AA001948F5 /* IRCSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECE3296815D309AA001948F5 /* IRCSession.cpp */; };
+		ECE3296D15D56321001948F5 /* MessageFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECE3296A15D56321001948F5 /* MessageFactory.cpp */; };
+		ECE3296E15D56321001948F5 /* MessageHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECE3296C15D56321001948F5 /* MessageHandler.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -33,6 +35,9 @@
 		EC8C8A5915D2EBD6009612B8 /* SimpleSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimpleSocket.cpp; sourceTree = "<group>"; };
 		ECE3296615D30996001948F5 /* IRCSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRCSession.h; sourceTree = "<group>"; };
 		ECE3296815D309AA001948F5 /* IRCSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IRCSession.cpp; sourceTree = "<group>"; };
+		ECE3296A15D56321001948F5 /* MessageFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageFactory.cpp; sourceTree = "<group>"; };
+		ECE3296B15D56321001948F5 /* MessageFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageFactory.h; sourceTree = "<group>"; };
+		ECE3296C15D56321001948F5 /* MessageHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageHandler.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +70,9 @@
 		EC8C8A4C15D2E496009612B8 /* Bwee */ = {
 			isa = PBXGroup;
 			children = (
+				ECE3296A15D56321001948F5 /* MessageFactory.cpp */,
+				ECE3296B15D56321001948F5 /* MessageFactory.h */,
+				ECE3296C15D56321001948F5 /* MessageHandler.cpp */,
 				EC8C8A4D15D2E496009612B8 /* main.cpp */,
 				EC8C8A5615D2E4D2009612B8 /* SimpleSocket.h */,
 				EC8C8A5715D2E521009612B8 /* Common.h */,
@@ -130,6 +138,8 @@
 				EC8C8A4E15D2E496009612B8 /* main.cpp in Sources */,
 				EC8C8A5A15D2EBD6009612B8 /* SimpleSocket.cpp in Sources */,
 				ECE3296915D309AA001948F5 /* IRCSession.cpp in Sources */,
+				ECE3296D15D56321001948F5 /* MessageFactory.cpp in Sources */,
+				ECE3296E15D56321001948F5 /* MessageHandler.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

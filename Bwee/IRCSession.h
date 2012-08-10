@@ -3,7 +3,7 @@
 
 #include "Common.h"
 
-#define SESSION_UPDATE_RESOLUTION 100
+#define SESSION_UPDATE_RESOLUTION 10
 
 #define ADD_MESSAGEHANDLER(code,method) \
 	m_messageMap.insert( make_pair(code, method) );
