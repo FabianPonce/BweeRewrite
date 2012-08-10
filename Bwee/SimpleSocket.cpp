@@ -45,13 +45,6 @@ SimpleSocket::SimpleSocket(std::string pHost, uint32 pPort)
         m_fd = 0; 
         // connection failed!
     }
-
-	struct timeval tv;
-	tv.tv_sec = 3;
-	tv.tv_usec = 0;
-
-	if( setsockopt(m_fd, SOL_SOCKET, SO_RCVTIMEO, (char*)&tv, sizeof(tv)) == -1 )
-		m_fd = 0;
 }
 
 SimpleSocket::~SimpleSocket()
@@ -105,6 +98,7 @@ bool SimpleSocket::hasLine()
     res = recv(m_fd, buf, sizeof(buf), 0);
     if(res < 0)
     {
+         
         m_fd = 0;
         return false;
     } else if(res > 0) {
