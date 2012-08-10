@@ -46,12 +46,12 @@ SimpleSocket::SimpleSocket(std::string pHost, uint32 pPort)
         // connection failed!
     }
 
-	/*struct timeval tv;
+	struct timeval tv;
 	tv.tv_sec = 3;
 	tv.tv_usec = 0;
 
 	if( setsockopt(m_fd, SOL_SOCKET, SO_RCVTIMEO, (char*)&tv, sizeof(tv)) == -1 )
-		m_fd = 0;*/
+		m_fd = 0;
 }
 
 SimpleSocket::~SimpleSocket()
