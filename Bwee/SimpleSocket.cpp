@@ -37,27 +37,21 @@ SimpleSocket::SimpleSocket(std::string pHost, uint32 pPort)
     }
     
     memset(&remote_addr, 0, sizeof(remote_addr));
-#ifdef WIN32
-	remote_addr.sin_family = server->h_addrtype;
+    remote_addr.sin_family = server->h_addrtype;
 	memcpy(&remote_addr.sin_addr.s_addr, server->h_addr_list[0], server->h_length);
     remote_addr.sin_port = htons(pPort);
-#else
-	remote_addr.sin_family = AF_INET;
-    memcpy((void*)server->h_addr, &remote_addr.sin_addr.s_addr, server->h_length);
-    remote_addr.sin_port = htons(pPort);
-#endif
     
     if (connect(m_fd,(struct sockaddr *) &remote_addr,sizeof(remote_addr)) < 0) {
         m_fd = 0; 
         // connection failed!
     }
 
-	struct timeval tv;
+	/*struct timeval tv;
 	tv.tv_sec = 3;
 	tv.tv_usec = 0;
 
 	if( setsockopt(m_fd, SOL_SOCKET, SO_RCVTIMEO, (char*)&tv, sizeof(tv)) == -1 )
-		m_fd = 0;
+		m_fd = 0;*/
 }
 
 SimpleSocket::~SimpleSocket()
