@@ -3,9 +3,9 @@
 IRCSession::IRCSession(std::string pServer, uint32 pPort)
 {
 	// Setup the message mappings
-	ADD_MESSAGEHANDLER("PING", &IRCSession::HandlePing);
-	ADD_MESSAGEHANDLER("001", &IRCSession::Handle001);
-	ADD_MESSAGEHANDLER("PRIVMSG", &IRCSession::HandlePrivmsg);
+	ADD_MESSAGEHANDLER(MESSAGE_PING, &IRCSession::HandlePing);
+	ADD_MESSAGEHANDLER(MESSAGE_RAWNUMERIC_001, &IRCSession::Handle001);
+	ADD_MESSAGEHANDLER(MESSAGE_PRIVMSG, &IRCSession::HandlePrivmsg);
 
 	m_socket = new SimpleSocket(pServer, pPort);
 
@@ -46,10 +46,21 @@ void IRCSession::Parse(std::string pMessage)
 
 	size_t postCommandSpace = pMessage.find(' ', prefixOffset);
 	message.command = pMessage.substr(prefixOffset, postCommandSpace-prefixOffset);
-	size_t postPrefixSpace = pMessage.find(' ', postCommandSpace+1);
-	message.params = pMessage.substr(postCommandSpace+1, postPrefixSpace-postCommandSpace-1);
+	size_t trailingMarker = pMessage.find(" :", postCommandSpace);
+
+	// Read in the parameters
+	message.rawParams = pMessage.substr(postCommandSpace+1, trailingMarker-postCommandSpace-1);
+	size_t lastSpace = postCommandSpace;
+	while( lastSpace != string::npos && lastSpace < trailingMarker )
+	{
+		size_t nextSpace = pMessage.find(' ', lastSpace+1);
+		std::string param = pMessage.substr(lastSpace+1, nextSpace-lastSpace-1);
+		
+		message.params.push_back(param);
+
+		lastSpace = nextSpace;
+	}
 	
-	size_t trailingMarker = pMessage.find(':', postPrefixSpace);
 	if( trailingMarker != string::npos )
 		message.trailing = pMessage.substr(trailingMarker+1);
 
@@ -77,9 +88,9 @@ void IRCSession::Update()
 	SendMessage(MessageFactory::NickName("Bwee"));
 	SendMessage(MessageFactory::User("Bwee", "localhost", "localhost", "Bwee"));
 
-	while(m_socket->isConnected() || m_socket->hasLine())
+	while(m_socket->isConnected())
 	{
-		if( m_socket->hasLine() )
+		while( m_socket->hasLine() )
 		{
 			std::string msg = m_socket->readLine();
 			Parse(msg);
@@ -91,6 +102,7 @@ void IRCSession::Update()
 void IRCSession::SendMessage(IRCMessage* pMessage)
 {
 	m_socket->sendLine(pMessage->toString());
+	std::cout << pMessage->toString() << std::endl;
 	delete pMessage;
 }
 

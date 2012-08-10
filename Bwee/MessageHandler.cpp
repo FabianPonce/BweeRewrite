@@ -4,7 +4,7 @@ void IRCSession::HandlePing(IRCMessage& recvData)
 {
 	// Command: PING
 	// Parameters: <server1> [<server2>]
-	SendMessage(MessageFactory::Pong(recvData.params.c_str()));
+	SendMessage(MessageFactory::Pong(recvData.rawParams.c_str()));
 }
 
 void IRCSession::Handle001(IRCMessage& recvData)
@@ -17,5 +17,5 @@ void IRCSession::Handle001(IRCMessage& recvData)
 
 void IRCSession::HandlePrivmsg(IRCMessage& recvData)
 {
-	std::cout << recvData.rawPrefix;
+	
 }

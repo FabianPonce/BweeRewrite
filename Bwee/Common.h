@@ -9,6 +9,7 @@
 #include <string>
 #include <sstream>
 #include <map>
+#include <list>
 
 using namespace std;
 
@@ -87,7 +88,7 @@ typedef uint8_t uint8;
 typedef uint32_t DWORD;
 #endif
 
-
+#include "MessageTypes.h"
 #include "MessageFactory.h"
 #include "SimpleSocket.h"
 #include "Util.h"

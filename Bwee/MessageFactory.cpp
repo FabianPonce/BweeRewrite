@@ -15,11 +15,9 @@ IRCMessage* MessageFactory::User(const char* pUserName, const char* pHostName, c
 	IRCMessage* msg = new IRCMessage;
 	msg->command = "USER";
 	msg->trailing = pRealName;
-	msg->params = pUserName;
-	msg->params.append(" ");
-	msg->params.append(pHostName);
-	msg->params.append(" ");
-	msg->params.append(pServerName);
+	msg->params.push_back(pUserName);
+	msg->params.push_back(pHostName);
+	msg->params.push_back(pServerName);
 
 	return msg;
 }
@@ -28,11 +26,10 @@ IRCMessage* MessageFactory::Join(const char* channel, const char* key /* = "" */
 {
 	IRCMessage* msg = new IRCMessage;
 	msg->command = "JOIN";
-	msg->params = channel;
+	msg->params.push_back(channel);
 	if( strlen(key) > 0 )
 	{
-		msg->params.append(" ");
-		msg->params.append(key);
+		msg->params.push_back(key);
 	}
 
 	return msg;
@@ -42,7 +39,6 @@ IRCMessage* MessageFactory::Quit(const char* pReason)
 {
 	IRCMessage* msg = new IRCMessage;
 	msg->command = "QUIT";
-	msg->params = " ";
 	msg->trailing = pReason;
 	return msg;
 }

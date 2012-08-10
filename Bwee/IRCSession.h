@@ -53,19 +53,22 @@ struct IRCMessagePrefix
 	}
 };
 
+#define MAX_PARAMETERS 15
+
 struct IRCMessage
 {
 	IRCMessagePrefix* prefix;
-	std::string rawPrefix;
+	std::string rawPrefix; // READ-ONLY
 
 	std::string command;
-	std::string params;
+	std::list<std::string> params;
+	std::string rawParams; // READ-ONLY
 	std::string trailing;
 
-	IRCMessage(std::string pCommand, std::string pParams)
+	IRCMessage(std::string pCommand, std::string pParam)
 	{
 		command = pCommand;
-		params = pParams;
+		params.push_back(pParam);
 		prefix = NULL;
 	}
 
@@ -89,6 +92,11 @@ struct IRCMessage
 	{
 		return trailing.size() != 0;
 	}
+
+	bool hasParams()
+	{
+		return params.size() != 0;
+	}
 	
 	std::string toString()
 	{
@@ -96,7 +104,16 @@ struct IRCMessage
 		if( hasPrefix() )
 			msg << ":" << rawPrefix << " ";
 
-		msg << command << " " << params;
+		msg << command;
+
+		if( params.size() ) 
+		{
+			std::list<std::string>::iterator itr = params.begin();
+			for(; itr != params.end(); ++itr)
+			{
+				msg << " " << (*itr);
+			}
+		}
 
 		if( hasTrailing() )
 			msg << " :" << trailing;

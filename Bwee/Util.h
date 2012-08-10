@@ -8,7 +8,8 @@ class Util
 public:
     static std::string getVersionString() {
         std::stringstream st;
-        st << "Bwee " << BWEE_MAJOR_VERSION << "." << BWEE_MINOR_VERSION << "." << BWEE_BUGFIX_VERSION;
+        st << "Bwee " << BWEE_MAJOR_VERSION << "." << BWEE_MINOR_VERSION << "." << BWEE_BUGFIX_VERSION \
+			<< " | " << PLATFORM_TEXT;
         return st.str();
     }
 };

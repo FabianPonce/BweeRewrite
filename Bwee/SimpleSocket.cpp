@@ -76,7 +76,7 @@ bool SimpleSocket::sendLine(std::string pLine)
     if( !isConnected() )
         return false;
     
-    pLine.append("\n");
+    pLine.append("\r\n");
     
 #ifndef WIN32
     int n = write(m_fd, pLine.c_str(), (int)pLine.size());

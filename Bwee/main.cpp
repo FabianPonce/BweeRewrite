@@ -4,7 +4,7 @@ int main(int argc, const char * argv[])
 {
 
     // insert code here...
-    std::cout << Util::getVersionString() << " | " << PLATFORM_TEXT << std::endl;
+    std::cout << Util::getVersionString() << std::endl;
     
     
     IRCSession session("irc.freenode.net", 6667);
