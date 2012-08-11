@@ -142,6 +142,8 @@ public:
 
 	void SendMessage(IRCMessage* pMessage);
 	void SendMessage(IRCMessage& pMessage);
+
+	const char* getNickName() { return m_nickName.c_str(); }
 protected:
 	void Update();
 	void Parse(std::string pMessage);
@@ -151,12 +153,15 @@ protected:
 	void HandlePing(IRCMessage& recvData);
 	void Handle001(IRCMessage& recvData); // 001: Successful Registration (http://www.mirc.net/raws/?view=001)
 	void HandlePrivmsg(IRCMessage& recvData);
+	void HandleReplyTopic(IRCMessage& recvData);
 
 	SimpleSocket* m_socket;
 
 	MessageHandlerMap m_messageMap;
 
 	ScriptInterface* m_scriptInterface;
+
+	std::string m_nickName;
 };
 
 #endif

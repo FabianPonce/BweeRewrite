@@ -6,6 +6,9 @@ IRCSession::IRCSession(std::string pServer, uint32 pPort)
 	ADD_MESSAGEHANDLER(MESSAGE_PING, &IRCSession::HandlePing);
 	ADD_MESSAGEHANDLER(MESSAGE_RAWNUMERIC_001, &IRCSession::Handle001);
 	ADD_MESSAGEHANDLER(MESSAGE_PRIVMSG, &IRCSession::HandlePrivmsg);
+	ADD_MESSAGEHANDLER(MESSAGE_RPL_TOPIC, &IRCSession::HandleReplyTopic);
+	ADD_MESSAGEHANDLER(MESSAGE_RPL_NOTOPIC, &IRCSession::HandleReplyTopic);
+	ADD_MESSAGEHANDLER(MESSAGE_TOPIC, &IRCSession::HandleReplyTopic);			// NOT RFC 1459 COMPLIANT.
 
 	m_scriptInterface = new ScriptInterface(this);
 

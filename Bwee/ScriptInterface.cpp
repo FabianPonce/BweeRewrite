@@ -71,6 +71,21 @@ void ScriptInterface::OnReceivedMessage(const char* sender, const char* channel,
 	}	
 }
 
+void ScriptInterface::OnChangedTopic(const char* channel, const char* topic, const char* changedBy)
+{
+	for(std::set<uint16>::iterator itr = m_eventHandlers[SCRIPT_EVENT_TOPICCHANGED].begin(); itr != m_eventHandlers[SCRIPT_EVENT_TOPICCHANGED].end(); ++itr)
+	{
+		uint16 function = (*itr);
+		lua_settop(m_luaState, 0); // empty the stack
+		lua_getref(m_luaState, function);
+		lua_pushstring(m_luaState, channel);
+		lua_pushstring(m_luaState, topic);
+		lua_pushstring(m_luaState, changedBy);
+		int e = lua_pcall(m_luaState, 3, 0, 0);
+		reportErrors(e);
+	}	
+}
+
 void ScriptInterface::OnConnected()
 {
 	for(std::set<uint16>::iterator itr = m_eventHandlers[SCRIPT_EVENT_CONNECTED].begin(); itr != m_eventHandlers[SCRIPT_EVENT_CONNECTED].end(); ++itr)
@@ -119,6 +134,38 @@ int luaJoin(lua_State* pState)
 	return 0;
 }
 
+int luaQuit(lua_State* pState)
+{
+	int argc = lua_gettop(pState);
+	if(argc > 1)
+		return 0;
+
+	IRCSession* sess = m_sessionMap[pState];
+
+	if( argc == 1 )
+		sess->SendMessage(MessageFactory::Quit(lua_tostring(pState, 1)));
+	else
+		sess->SendMessage(MessageFactory::Quit());
+
+	lua_pop(pState, lua_gettop(pState));
+	return 0;
+}
+
+int luaGetNick(lua_State* pState)
+{
+	IRCSession* sess = m_sessionMap[pState];
+	lua_pushstring(pState, sess->getNickName());
+
+	return 1;
+}
+
+int luaGetVersionInfo(lua_State* pState)
+{
+	lua_pushstring(pState, Util::getVersionString().c_str());
+
+	return 1;
+}
+
 int luaRegisterMessageHandler(lua_State* pState)
 {
 	lua_settop(pState, 1);
@@ -130,6 +177,22 @@ int luaRegisterMessageHandler(lua_State* pState)
 	uint16 function = lua_ref(pState, true);
 
 	m_interfaceMap[pState]->m_eventHandlers[SCRIPT_EVENT_PRIVMSG].insert(function);
+
+	lua_pop(pState, lua_gettop(pState));
+	return 0;
+}
+
+int luaRegisterTopicChangedHandler(lua_State* pState)
+{
+	lua_settop(pState, 1);
+
+	const char* typeName = luaL_typename(pState, 1);
+	if( strcmp(typeName, "function") ) // someones being stupid and passing a string or something
+		return 0;
+
+	uint16 function = lua_ref(pState, true);
+
+	m_interfaceMap[pState]->m_eventHandlers[SCRIPT_EVENT_TOPICCHANGED].insert(function);
 
 	lua_pop(pState, lua_gettop(pState));
 	return 0;
@@ -155,7 +218,12 @@ void ScriptInterface::registerFunctions()
 {
 	lua_register(m_luaState, "RegisterMessageHandler", luaRegisterMessageHandler);
 	lua_register(m_luaState, "RegisterConnectedHandler", luaRegisterConnected);
+	lua_register(m_luaState, "RegisterTopicChangedHandler", luaRegisterTopicChangedHandler);
 
 	lua_register(m_luaState, "SendMessage", luaSendMessage);
 	lua_register(m_luaState, "Join", luaJoin);
+	lua_register(m_luaState, "Quit", luaQuit);
+
+	lua_register(m_luaState, "GetNick", luaGetNick);
+	lua_register(m_luaState, "GetVersionInfo", luaGetVersionInfo);
 }
