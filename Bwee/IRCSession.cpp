@@ -9,9 +9,13 @@ IRCSession::IRCSession(std::string pServer, uint32 pPort)
 	ADD_MESSAGEHANDLER(MESSAGE_RPL_TOPIC, &IRCSession::HandleReplyTopic);
 	ADD_MESSAGEHANDLER(MESSAGE_RPL_NOTOPIC, &IRCSession::HandleReplyTopic);
 	ADD_MESSAGEHANDLER(MESSAGE_TOPIC, &IRCSession::HandleReplyTopic);			// NOT RFC 1459 COMPLIANT.
+	ADD_MESSAGEHANDLER(MESSAGE_RPL_ENDOFMOTD, &IRCSession::HandleMotdMessages);
+	ADD_MESSAGEHANDLER(MESSAGE_RPL_MOTD, &IRCSession::HandleMotdMessages);
+	ADD_MESSAGEHANDLER(MESSAGE_RPL_MOTDSTART, &IRCSession::HandleMotdMessages);
 
 	m_scriptInterface = new ScriptInterface(this);
 	m_hasQuit = false;
+	m_motdIsDone = false;
 	m_socket = new SimpleSocket(pServer, pPort);
 
 	Update();

@@ -3,6 +3,20 @@
 static std::map<lua_State*, IRCSession*> m_sessionMap;
 static std::map<lua_State*, ScriptInterface*> m_interfaceMap;
 
+#define SCRIPTINTERFACE_BEGIN_EVENT_HANDLER(eventName, scriptEnum, ...) \
+	void ScriptInterface::eventName(__VA_ARGS__) \
+{ \
+	for(std::set<uint16>::iterator itr = m_eventHandlers[scriptEnum].begin(); itr != m_eventHandlers[scriptEnum].end(); ++itr) \
+{ \
+	uint16 function = (*itr); \
+	prepareFunction(function);
+
+
+#define SCRIPTINTERFACE_END_EVENT_HANDLER \
+	executeFunction(); \
+} \
+}
+
 ScriptInterface::ScriptInterface(IRCSession* pSession)
 {
 	m_session = pSession;
@@ -47,7 +61,22 @@ ScriptInterface::~ScriptInterface()
 	m_luaState = NULL;
 }
 
-void ScriptInterface::reportErrors(int pStatus)
+inline void ScriptInterface::prepareFunction(uint16 func)
+{
+	lua_settop(m_luaState, 0); // Empty the stack
+	lua_getref(m_luaState, func);
+	m_argCount = 0;
+}
+
+inline void ScriptInterface::executeFunction()
+{
+	int e = lua_pcall(m_luaState, m_argCount, 0, 0);
+	reportErrors(e);
+
+	m_argCount = 0;
+}
+
+inline void ScriptInterface::reportErrors(int pStatus)
 {
 	if( pStatus != 0 )
 	{
@@ -56,47 +85,32 @@ void ScriptInterface::reportErrors(int pStatus)
 	}
 }
 
-void ScriptInterface::OnReceivedMessage(const char* sender, const char* channel, const char* message)
+SCRIPTINTERFACE_BEGIN_EVENT_HANDLER(OnReceivedMessage,SCRIPT_EVENT_PRIVMSG,const char* sender, const char* channel, const char* message)
 {
-	for(std::set<uint16>::iterator itr = m_eventHandlers[SCRIPT_EVENT_PRIVMSG].begin(); itr != m_eventHandlers[SCRIPT_EVENT_PRIVMSG].end(); ++itr)
-	{
-		uint16 function = (*itr);
-		lua_settop(m_luaState, 0); // empty the stack
-		lua_getref(m_luaState, function);
-		lua_pushstring(m_luaState, sender);
-		lua_pushstring(m_luaState, channel);
-		lua_pushstring(m_luaState, message);
-		int e = lua_pcall(m_luaState, 3, 0, 0);
-		reportErrors(e);
-	}	
+	push(sender);
+	push(channel);
+	push(message);
 }
+SCRIPTINTERFACE_END_EVENT_HANDLER
 
-void ScriptInterface::OnChangedTopic(const char* channel, const char* topic, const char* changedBy)
+SCRIPTINTERFACE_BEGIN_EVENT_HANDLER(OnChangedTopic,SCRIPT_EVENT_TOPICCHANGED, const char* channel, const char* topic, const char* changedBy)
 {
-	for(std::set<uint16>::iterator itr = m_eventHandlers[SCRIPT_EVENT_TOPICCHANGED].begin(); itr != m_eventHandlers[SCRIPT_EVENT_TOPICCHANGED].end(); ++itr)
-	{
-		uint16 function = (*itr);
-		lua_settop(m_luaState, 0); // empty the stack
-		lua_getref(m_luaState, function);
-		lua_pushstring(m_luaState, channel);
-		lua_pushstring(m_luaState, topic);
-		lua_pushstring(m_luaState, changedBy);
-		int e = lua_pcall(m_luaState, 3, 0, 0);
-		reportErrors(e);
-	}	
+	push(channel);
+	push(topic);
+	push(changedBy);
 }
+SCRIPTINTERFACE_END_EVENT_HANDLER
 
-void ScriptInterface::OnConnected()
+SCRIPTINTERFACE_BEGIN_EVENT_HANDLER(OnConnected,SCRIPT_EVENT_CONNECTED)
 {
-	for(std::set<uint16>::iterator itr = m_eventHandlers[SCRIPT_EVENT_CONNECTED].begin(); itr != m_eventHandlers[SCRIPT_EVENT_CONNECTED].end(); ++itr)
-	{
-		uint16 function = (*itr);
-		lua_settop(m_luaState, 0); // empty the stack
-		lua_getref(m_luaState, function);
-		int e = lua_pcall(m_luaState, 0, 0, 0);
-		reportErrors(e);
-	}	
 }
+SCRIPTINTERFACE_END_EVENT_HANDLER
+
+SCRIPTINTERFACE_BEGIN_EVENT_HANDLER(OnReceivedMotd, SCRIPT_EVENT_MOTD, const char* motd)
+{
+	push(m_session->getMotd());
+}
+SCRIPTINTERFACE_END_EVENT_HANDLER
 
 int luaSendMessage(lua_State* pState)
 {
@@ -214,11 +228,28 @@ int luaRegisterConnected(lua_State* pState)
 	return 0;
 }
 
+int luaRegisterMotdHandler(lua_State* pState)
+{
+	lua_settop(pState, 1);
+
+	const char* typeName = luaL_typename(pState, 1);
+	if( strcmp(typeName, "function") ) // someones being stupid and passing a string or something
+		return 0;
+
+	uint16 function = lua_ref(pState, true);
+
+	m_interfaceMap[pState]->m_eventHandlers[SCRIPT_EVENT_MOTD].insert(function);
+
+	lua_pop(pState, lua_gettop(pState));
+	return 0;
+}
+
 void ScriptInterface::registerFunctions()
 {
 	lua_register(m_luaState, "RegisterMessageHandler", luaRegisterMessageHandler);
 	lua_register(m_luaState, "RegisterConnectedHandler", luaRegisterConnected);
 	lua_register(m_luaState, "RegisterTopicChangedHandler", luaRegisterTopicChangedHandler);
+	lua_register(m_luaState, "RegisterMotdHandler", luaRegisterMotdHandler);
 
 	lua_register(m_luaState, "SendMessage", luaSendMessage);
 	lua_register(m_luaState, "Join", luaJoin);

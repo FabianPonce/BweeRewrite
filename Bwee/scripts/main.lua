@@ -19,7 +19,11 @@
 --		This includes newly joined channels, and topic changes.
 --		
 --		<function a> parameters: channel, topic, changedby
---
+--	
+--	RegisterMotdHandler(<function a>)
+--		Designates a function that is called when the bot receives the completed message of the day.
+--		
+--		<function a> parameters: motd
 --	
 -- Accessors:
 --
@@ -68,3 +72,9 @@ function TopicChanged (channel, topic, changedby)
 	SendMessage(channel, "I like this new topic.")
 end
 RegisterTopicChangedHandler(TopicChanged)
+
+function ReceivedMotd (newMotd)
+	print ("I have received the MOTD!")
+	print (newMotd)
+end
+RegisterMotdHandler(ReceivedMotd)

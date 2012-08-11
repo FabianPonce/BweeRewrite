@@ -27,3 +27,20 @@ void IRCSession::HandleReplyTopic(IRCMessage& recvData)
 	else
 		m_scriptInterface->OnChangedTopic(recvData.rawParams.c_str(), recvData.trailing.c_str(), recvData.prefix->nickOrServerName.c_str());
 }
+
+void IRCSession::HandleMotdMessages(IRCMessage& recvData)
+{
+	if( recvData.command == MESSAGE_RPL_MOTDSTART ) {
+		m_motd.clear();
+		m_motdIsDone = false;
+	}
+	else if( recvData.command == MESSAGE_RPL_MOTD ) { // RPL_MOTD is in format ":- <text>"
+		m_motd.append(recvData.trailing.substr(2));
+		m_motd.append("\n");
+	}
+	else if( recvData.command == MESSAGE_RPL_ENDOFMOTD)
+	{
+		m_motdIsDone = true;
+		m_scriptInterface->OnReceivedMotd(getMotd());
+	}
+}

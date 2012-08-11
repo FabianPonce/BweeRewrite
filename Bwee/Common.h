@@ -50,7 +50,7 @@ using namespace std;
 #define PLATFORM_TEXT "MacOSX"
 #define UNIX_FLAVOUR UNIX_FLAVOUR_OSX
 #else
-#ifdef USE_KQUEUE
+#ifdef __FreeBSD__ 
 #define PLATFORM_TEXT "FreeBSD"
 #define UNIX_FLAVOUR UNIX_FLAVOUR_BSD
 #else

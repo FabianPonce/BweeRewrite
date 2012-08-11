@@ -146,6 +146,7 @@ public:
 	void Quit(const char* pMessage = "");
 
 	const char* getNickName() { return m_nickName.c_str(); }
+	const char* getMotd() { return (m_motdIsDone ? m_motd.c_str() : ""); }
 protected:
 	void Update();
 	void Parse(std::string pMessage);
@@ -156,6 +157,7 @@ protected:
 	void Handle001(IRCMessage& recvData); // 001: Successful Registration (http://www.mirc.net/raws/?view=001)
 	void HandlePrivmsg(IRCMessage& recvData);
 	void HandleReplyTopic(IRCMessage& recvData);
+	void HandleMotdMessages(IRCMessage& recvData);
 
 	SimpleSocket* m_socket;
 
@@ -164,6 +166,8 @@ protected:
 	ScriptInterface* m_scriptInterface;
 
 	std::string m_nickName;
+	std::string m_motd;
+	bool m_motdIsDone;
 
 	bool m_hasQuit;
 };
