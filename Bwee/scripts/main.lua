@@ -38,6 +38,9 @@
 --	Quit([message])
 --		Terminates the connection to the IRC server and sends a quit message, if specified.
 --
+--	Join(channel, [key])
+--		Joins a channel on the IRC server. If the channel is password-protected, the optional key parameter will be used.
+--		
 -- ----------------------------------------------------------------------------------------------
 -- Example code provided below.
 -- ----------------------------------------------------------------------------------------------

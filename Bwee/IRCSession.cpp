@@ -33,7 +33,7 @@ void IRCSession::Parse(std::string pMessage)
 	/*
 	 * Any message we receive will be in the following format:
 	 *	:<prefix> <command> <params> :<trailing>
-	 * >> prefix and trailing parts are optional. If the prefix or trailing part is missing, there will also be missing ':'
+	 * >> prefix, params, and trailing parts are optional. If the prefix or trailing part is missing, there will also be missing ':'
 	 */
 	IRCMessage message;
 
