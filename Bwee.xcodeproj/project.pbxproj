@@ -12,17 +12,38 @@
 		ECE3296915D309AA001948F5 /* IRCSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECE3296815D309AA001948F5 /* IRCSession.cpp */; };
 		ECE3296D15D56321001948F5 /* MessageFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECE3296A15D56321001948F5 /* MessageFactory.cpp */; };
 		ECE3296E15D56321001948F5 /* MessageHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECE3296C15D56321001948F5 /* MessageHandler.cpp */; };
+		ECE329FC15D60982001948F5 /* liblua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ECE3298715D607F1001948F5 /* liblua.a */; };
+		ECE329FF15D609B6001948F5 /* ScriptInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ECE329FD15D609B6001948F5 /* ScriptInterface.cpp */; };
+		ECE32A0215D60A82001948F5 /* main.lua in CopyFiles */ = {isa = PBXBuildFile; fileRef = ECE32A0115D60A7B001948F5 /* main.lua */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		ECE3298615D607F1001948F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ECE3298215D607F0001948F5 /* lua.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ECE3297B15D607F0001948F5;
+			remoteInfo = lua;
+		};
+		ECE329FA15D60978001948F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ECE3298215D607F0001948F5 /* lua.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = ECE3297A15D607F0001948F5;
+			remoteInfo = lua;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		EC8C8A4715D2E496009612B8 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
+			buildActionMask = 12;
+			dstPath = scripts;
+			dstSubfolderSpec = 16;
 			files = (
+				ECE32A0215D60A82001948F5 /* main.lua in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -39,6 +60,10 @@
 		ECE3296B15D56321001948F5 /* MessageFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageFactory.h; sourceTree = "<group>"; };
 		ECE3296C15D56321001948F5 /* MessageHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageHandler.cpp; sourceTree = "<group>"; };
 		ECE3296F15D5A7D2001948F5 /* MessageTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageTypes.h; sourceTree = "<group>"; };
+		ECE3298215D607F0001948F5 /* lua.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = lua.xcodeproj; path = Bwee/lua/lua/lua.xcodeproj; sourceTree = "<group>"; };
+		ECE329FD15D609B6001948F5 /* ScriptInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScriptInterface.cpp; sourceTree = "<group>"; };
+		ECE329FE15D609B6001948F5 /* ScriptInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScriptInterface.h; sourceTree = "<group>"; };
+		ECE32A0115D60A7B001948F5 /* main.lua */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.lua; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECE329FC15D60982001948F5 /* liblua.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -55,6 +81,8 @@
 		EC8C8A3E15D2E496009612B8 = {
 			isa = PBXGroup;
 			children = (
+				ECE32A0015D60A7B001948F5 /* scripts */,
+				ECE3298215D607F0001948F5 /* lua.xcodeproj */,
 				EC8C8A4C15D2E496009612B8 /* Bwee */,
 				EC8C8A4A15D2E496009612B8 /* Products */,
 			);
@@ -71,6 +99,8 @@
 		EC8C8A4C15D2E496009612B8 /* Bwee */ = {
 			isa = PBXGroup;
 			children = (
+				ECE329FD15D609B6001948F5 /* ScriptInterface.cpp */,
+				ECE329FE15D609B6001948F5 /* ScriptInterface.h */,
 				ECE3296F15D5A7D2001948F5 /* MessageTypes.h */,
 				ECE3296A15D56321001948F5 /* MessageFactory.cpp */,
 				ECE3296B15D56321001948F5 /* MessageFactory.h */,
@@ -84,6 +114,23 @@
 				ECE3296815D309AA001948F5 /* IRCSession.cpp */,
 			);
 			path = Bwee;
+			sourceTree = "<group>";
+		};
+		ECE3298315D607F0001948F5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				ECE3298715D607F1001948F5 /* liblua.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		ECE32A0015D60A7B001948F5 /* scripts */ = {
+			isa = PBXGroup;
+			children = (
+				ECE32A0115D60A7B001948F5 /* main.lua */,
+			);
+			name = scripts;
+			path = Bwee/scripts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -100,6 +147,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				ECE329FB15D60978001948F5 /* PBXTargetDependency */,
 			);
 			name = Bwee;
 			productName = Bwee;
@@ -125,12 +173,28 @@
 			mainGroup = EC8C8A3E15D2E496009612B8;
 			productRefGroup = EC8C8A4A15D2E496009612B8 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = ECE3298315D607F0001948F5 /* Products */;
+					ProjectRef = ECE3298215D607F0001948F5 /* lua.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				EC8C8A4815D2E496009612B8 /* Bwee */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		ECE3298715D607F1001948F5 /* liblua.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = liblua.a;
+			remoteRef = ECE3298615D607F1001948F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
 		EC8C8A4515D2E496009612B8 /* Sources */ = {
@@ -142,10 +206,19 @@
 				ECE3296915D309AA001948F5 /* IRCSession.cpp in Sources */,
 				ECE3296D15D56321001948F5 /* MessageFactory.cpp in Sources */,
 				ECE3296E15D56321001948F5 /* MessageHandler.cpp in Sources */,
+				ECE329FF15D609B6001948F5 /* ScriptInterface.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		ECE329FB15D60978001948F5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = lua;
+			targetProxy = ECE329FA15D60978001948F5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		EC8C8A5115D2E496009612B8 /* Debug */ = {
