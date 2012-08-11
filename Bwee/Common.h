@@ -10,6 +10,7 @@
 #include <sstream>
 #include <map>
 #include <list>
+#include <set>
 
 using namespace std;
 
@@ -21,6 +22,7 @@ using namespace std;
 #define Sleep(x) usleep(x)
 #else
 #include <WinSock2.h>
+#undef SendMessage // this broke so much shit, why would you define this windows, WHY?
 #endif
 
 // current platform and compiler
@@ -88,6 +90,7 @@ typedef uint8_t uint8;
 typedef uint32_t DWORD;
 #endif
 
+#include "ScriptInterface.h"
 #include "MessageTypes.h"
 #include "MessageFactory.h"
 #include "SimpleSocket.h"

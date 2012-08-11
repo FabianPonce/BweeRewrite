@@ -42,3 +42,12 @@ IRCMessage* MessageFactory::Quit(const char* pReason)
 	msg->trailing = pReason;
 	return msg;
 }
+
+IRCMessage* MessageFactory::PrivMsg(const char* pTarget, const char* pMessage)
+{
+	IRCMessage* msg = new IRCMessage;
+	msg->command = "PRIVMSG";
+	msg->params.push_back(pTarget);
+	msg->trailing = pMessage;
+	return msg;
+}

@@ -10,12 +10,10 @@ void IRCSession::HandlePing(IRCMessage& recvData)
 void IRCSession::Handle001(IRCMessage& recvData)
 {
 	// We receive this message once registration was successful, NICK/USER are authenticated.
-	// Join a default channel for now?
-
-	SendMessage(MessageFactory::Join("#bwee"));
+	m_scriptInterface->OnConnected();
 }
 
 void IRCSession::HandlePrivmsg(IRCMessage& recvData)
 {
-	
+	m_scriptInterface->OnReceivedMessage(recvData.prefix->nickOrServerName.c_str(), recvData.rawParams.c_str(), recvData.trailing.c_str());
 }

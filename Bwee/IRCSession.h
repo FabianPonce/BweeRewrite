@@ -140,13 +140,12 @@ public:
 	IRCSession(std::string pServer, uint32 pPort);
 	~IRCSession();
 
+	void SendMessage(IRCMessage* pMessage);
+	void SendMessage(IRCMessage& pMessage);
 protected:
 	void Update();
 	void Parse(std::string pMessage);
 	void HandleMessage(IRCMessage* pMessage);
-
-	void SendMessage(IRCMessage* pMessage);
-	void SendMessage(IRCMessage& pMessage);
 
 	// Message Handlers
 	void HandlePing(IRCMessage& recvData);
@@ -156,6 +155,8 @@ protected:
 	SimpleSocket* m_socket;
 
 	MessageHandlerMap m_messageMap;
+
+	ScriptInterface* m_scriptInterface;
 };
 
 #endif

@@ -7,6 +7,8 @@ IRCSession::IRCSession(std::string pServer, uint32 pPort)
 	ADD_MESSAGEHANDLER(MESSAGE_RAWNUMERIC_001, &IRCSession::Handle001);
 	ADD_MESSAGEHANDLER(MESSAGE_PRIVMSG, &IRCSession::HandlePrivmsg);
 
+	m_scriptInterface = new ScriptInterface(this);
+
 	m_socket = new SimpleSocket(pServer, pPort);
 
 	Update();
@@ -62,7 +64,7 @@ void IRCSession::Parse(std::string pMessage)
 	}
 	
 	if( trailingMarker != string::npos )
-		message.trailing = pMessage.substr(trailingMarker+1);
+		message.trailing = pMessage.substr(trailingMarker+2);
 
 	HandleMessage(&message);
 }

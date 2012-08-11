@@ -22,6 +22,8 @@ public:
 	static IRCMessage* Join(const char* channel, const char* key = "");
 
 	static IRCMessage* Quit(const char* pReason);
+
+	static IRCMessage* PrivMsg(const char* pTarget, const char* pMessage);
 };
 
 #endif
