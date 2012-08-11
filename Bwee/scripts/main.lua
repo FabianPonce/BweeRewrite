@@ -35,6 +35,8 @@
 --	SendMessage(target, message)
 --		Sends an ordinary PRIVMSG to the target, with message.
 --
+--	Quit([message])
+--		Terminates the connection to the IRC server and sends a quit message, if specified.
 --
 -- ----------------------------------------------------------------------------------------------
 -- Example code provided below.
@@ -45,6 +47,8 @@ function OnMessageReceived (sender, channel, message)
 		SendMessage(channel, "Hello, " .. sender .. ", nice to meet you, I'm " .. GetNick())
 	elseif string.find(message, "version") then
 		SendMessage(channel, "I am running " .. GetVersionInfo())
+	elseif string.find(message, "quit") then
+		Quit("Bye!")
 	end
 end
 

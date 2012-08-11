@@ -143,9 +143,9 @@ int luaQuit(lua_State* pState)
 	IRCSession* sess = m_sessionMap[pState];
 
 	if( argc == 1 )
-		sess->SendMessage(MessageFactory::Quit(lua_tostring(pState, 1)));
+		sess->Quit(lua_tostring(pState, 1));
 	else
-		sess->SendMessage(MessageFactory::Quit());
+		sess->Quit();
 
 	lua_pop(pState, lua_gettop(pState));
 	return 0;

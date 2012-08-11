@@ -13,5 +13,9 @@ int main(int argc, const char * argv[])
 	WSACleanup();
 #endif
     
+	std::cout << "All IRC connections have been terminated." << std::endl;
+	std::cout << "Terminating in 5 seconds..." << std::endl;
+
+	Sleep(5000);
     return 0;
 } 

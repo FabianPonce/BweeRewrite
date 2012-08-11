@@ -143,6 +143,8 @@ public:
 	void SendMessage(IRCMessage* pMessage);
 	void SendMessage(IRCMessage& pMessage);
 
+	void Quit(const char* pMessage = "");
+
 	const char* getNickName() { return m_nickName.c_str(); }
 protected:
 	void Update();
@@ -162,6 +164,8 @@ protected:
 	ScriptInterface* m_scriptInterface;
 
 	std::string m_nickName;
+
+	bool m_hasQuit;
 };
 
 #endif

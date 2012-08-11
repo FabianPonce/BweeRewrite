@@ -11,7 +11,7 @@ IRCSession::IRCSession(std::string pServer, uint32 pPort)
 	ADD_MESSAGEHANDLER(MESSAGE_TOPIC, &IRCSession::HandleReplyTopic);			// NOT RFC 1459 COMPLIANT.
 
 	m_scriptInterface = new ScriptInterface(this);
-
+	m_hasQuit = false;
 	m_socket = new SimpleSocket(pServer, pPort);
 
 	Update();
@@ -19,7 +19,8 @@ IRCSession::IRCSession(std::string pServer, uint32 pPort)
 
 IRCSession::~IRCSession()
 {
-	SendMessage(MessageFactory::Quit(Util::getVersionString().c_str()));
+	if(!m_hasQuit)
+		Quit(Util::getVersionString().c_str());
 
 	delete m_socket;
 	m_socket = NULL;
@@ -93,15 +94,21 @@ void IRCSession::Update()
 	SendMessage(MessageFactory::NickName("Bwee"));
 	SendMessage(MessageFactory::User("Bwee", "localhost", "localhost", "Bwee"));
 
-	while(m_socket->isConnected())
+	while(m_socket->isConnected() && !m_hasQuit)
 	{
-		while( m_socket->hasLine() )
+		while( m_socket->hasLine() && !m_hasQuit)
 		{
 			std::string msg = m_socket->readLine();
 			Parse(msg);
 		}
 		Sleep(SESSION_UPDATE_RESOLUTION);
 	}
+}
+
+void IRCSession::Quit(const char* pMessage)
+{
+	SendMessage(MessageFactory::Quit(pMessage));
+	m_hasQuit = true;
 }
 
 void IRCSession::SendMessage(IRCMessage* pMessage)
