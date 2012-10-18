@@ -13,9 +13,12 @@ IRCSession::IRCSession(std::string pServer, uint32 pPort)
 	ADD_MESSAGEHANDLER(MESSAGE_RPL_MOTD, &IRCSession::HandleMotdMessages);
 	ADD_MESSAGEHANDLER(MESSAGE_RPL_MOTDSTART, &IRCSession::HandleMotdMessages);
 
-	m_scriptInterface = new ScriptInterface(this);
+	m_scriptInterface = NULL;
 	m_hasQuit = false;
 	m_motdIsDone = false;
+
+	m_scriptInterface = new ScriptInterface(this);
+
 	m_socket = new SimpleSocket(pServer, pPort);
 
 	Update();
@@ -28,6 +31,18 @@ IRCSession::~IRCSession()
 
 	delete m_socket;
 	m_socket = NULL;
+
+	delete m_scriptInterface;
+}
+
+void IRCSession::ReloadLUA()
+{
+	// We can't delete the LUA interface now, in case we called the reload from LUA, since we'd delete ourselves and then return back to LUA's context.
+	if(m_scriptInterface) 
+		m_scriptsPendingDeletion.insert(m_scriptInterface);
+
+	m_scriptInterface = new ScriptInterface(this);
+	m_scriptInterface->OnLUAReloaded();
 }
 
 void IRCSession::Parse(std::string pMessage)
@@ -100,6 +115,16 @@ void IRCSession::Update()
 
 	while(m_socket->isConnected() && !m_hasQuit)
 	{
+		// Delete script interfaces pending deletion that were deleted from LUA's context. Nothing should be running between message parsing
+		if( m_scriptsPendingDeletion.size() != 0 )
+		{
+			for(std::set<ScriptInterface*>::iterator itr = m_scriptsPendingDeletion.begin(); itr != m_scriptsPendingDeletion.end(); ++itr)
+			{
+				delete (*itr);
+				m_scriptsPendingDeletion.erase(itr);
+			}
+		}
+
 		while( m_socket->hasLine() && !m_hasQuit)
 		{
 			std::string msg = m_socket->readLine();

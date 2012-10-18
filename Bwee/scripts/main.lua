@@ -24,6 +24,11 @@
 --		Designates a function that is called when the bot receives the completed message of the day.
 --		
 --		<function a> parameters: motd
+--
+--	RegisterLUAReloadedHandler(<function a>)
+--		Designates a function that is called when the bot reloads an LUA script rather than initializes it from the start.
+--
+--		<function a> parameters: N/A
 --	
 -- Accessors:
 --
@@ -45,6 +50,8 @@
 --	Join(channel, [key])
 --		Joins a channel on the IRC server. If the channel is password-protected, the optional key parameter will be used.
 --		
+--	ReloadLUA()
+--		Reloads the entire scripting engine and ceases processing of this currently-active script.
 -- ----------------------------------------------------------------------------------------------
 -- Example code provided below.
 -- ----------------------------------------------------------------------------------------------

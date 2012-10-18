@@ -15,7 +15,8 @@ class IRCSession;
 #define SCRIPT_EVENT_CONNECTED			1
 #define SCRIPT_EVENT_TOPICCHANGED		2
 #define SCRIPT_EVENT_MOTD				3
-#define SCRIPT_EVENT_MAX				4
+#define SCRIPT_EVENT_LUARELOADED		4
+#define SCRIPT_EVENT_MAX				5
 
 class ScriptInterface
 {
@@ -26,6 +27,7 @@ public:
 	void OnReceivedMessage(const char* sender, const char* channel, const char* message);
 	void OnChangedTopic(const char* channel, const  char* topic, const char* changedBy);
 	void OnConnected();
+	void OnLUAReloaded();
 	void OnReceivedMotd(const char* motd);
 
 	std::set<uint16> m_eventHandlers[SCRIPT_EVENT_MAX];

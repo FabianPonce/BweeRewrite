@@ -147,6 +147,9 @@ public:
 
 	const char* getNickName() { return m_nickName.c_str(); }
 	const char* getMotd() { return (m_motdIsDone ? m_motd.c_str() : ""); }
+
+	void ReloadLUA();
+
 protected:
 	void Update();
 	void Parse(std::string pMessage);
@@ -168,7 +171,7 @@ protected:
 	std::string m_nickName;
 	std::string m_motd;
 	bool m_motdIsDone;
-
+	std::set<ScriptInterface*> m_scriptsPendingDeletion;
 	bool m_hasQuit;
 };
 
