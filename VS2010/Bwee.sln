@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Bwee", "Bwee.vcxproj", "{1CB68A49-F448-20F6-54B6-7FB82E4C1AAD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0A31523F-D4F7-44DD-8678-9FB459E0E908} = {0A31523F-D4F7-44DD-8678-9FB459E0E908}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lua", "lua\lua.vcxproj", "{0A31523F-D4F7-44DD-8678-9FB459E0E908}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "luasqlite", "luasql\luasqlite\luasqlite.vcxproj", "{A3B4E9E3-B627-4E6D-9F86-B994E532F7C5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FF069D08-D08E-4FCC-B6A7-D657B62803DF} = {FF069D08-D08E-4FCC-B6A7-D657B62803DF}
+		{0A31523F-D4F7-44DD-8678-9FB459E0E908} = {0A31523F-D4F7-44DD-8678-9FB459E0E908}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sqlite3", "sqlite3\sqlite3.vcxproj", "{FF069D08-D08E-4FCC-B6A7-D657B62803DF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1CB68A49-F448-20F6-54B6-7FB82E4C1AAD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1CB68A49-F448-20F6-54B6-7FB82E4C1AAD}.Debug|Win32.Build.0 = Debug|Win32
+		{1CB68A49-F448-20F6-54B6-7FB82E4C1AAD}.Release|Win32.ActiveCfg = Release|Win32
+		{1CB68A49-F448-20F6-54B6-7FB82E4C1AAD}.Release|Win32.Build.0 = Release|Win32
+		{0A31523F-D4F7-44DD-8678-9FB459E0E908}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0A31523F-D4F7-44DD-8678-9FB459E0E908}.Debug|Win32.Build.0 = Debug|Win32
+		{0A31523F-D4F7-44DD-8678-9FB459E0E908}.Release|Win32.ActiveCfg = Release|Win32
+		{0A31523F-D4F7-44DD-8678-9FB459E0E908}.Release|Win32.Build.0 = Release|Win32
+		{A3B4E9E3-B627-4E6D-9F86-B994E532F7C5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A3B4E9E3-B627-4E6D-9F86-B994E532F7C5}.Debug|Win32.Build.0 = Debug|Win32
+		{A3B4E9E3-B627-4E6D-9F86-B994E532F7C5}.Release|Win32.ActiveCfg = Release|Win32
+		{A3B4E9E3-B627-4E6D-9F86-B994E532F7C5}.Release|Win32.Build.0 = Release|Win32
+		{FF069D08-D08E-4FCC-B6A7-D657B62803DF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FF069D08-D08E-4FCC-B6A7-D657B62803DF}.Debug|Win32.Build.0 = Debug|Win32
+		{FF069D08-D08E-4FCC-B6A7-D657B62803DF}.Release|Win32.ActiveCfg = Release|Win32
+		{FF069D08-D08E-4FCC-B6A7-D657B62803DF}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

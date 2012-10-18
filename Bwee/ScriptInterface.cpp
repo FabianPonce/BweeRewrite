@@ -32,6 +32,7 @@ ScriptInterface::ScriptInterface(IRCSession* pSession)
 	
 	luaL_openlibs(m_luaState);
 	
+	
 	registerFunctions();
 
 	int e = luaL_loadfile(m_luaState, "scripts/main.lua");

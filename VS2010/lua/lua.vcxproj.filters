@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\Bwee\lua\lapi.c" />
+    <ClCompile Include="..\..\Bwee\lua\lauxlib.c" />
+    <ClCompile Include="..\..\Bwee\lua\lbaselib.c" />
+    <ClCompile Include="..\..\Bwee\lua\lcode.c" />
+    <ClCompile Include="..\..\Bwee\lua\ldblib.c" />
+    <ClCompile Include="..\..\Bwee\lua\ldebug.c" />
+    <ClCompile Include="..\..\Bwee\lua\ldo.c" />
+    <ClCompile Include="..\..\Bwee\lua\ldump.c" />
+    <ClCompile Include="..\..\Bwee\lua\lfunc.c" />
+    <ClCompile Include="..\..\Bwee\lua\lgc.c" />
+    <ClCompile Include="..\..\Bwee\lua\linit.c" />
+    <ClCompile Include="..\..\Bwee\lua\liolib.c" />
+    <ClCompile Include="..\..\Bwee\lua\llex.c" />
+    <ClCompile Include="..\..\Bwee\lua\lmathlib.c" />
+    <ClCompile Include="..\..\Bwee\lua\lmem.c" />
+    <ClCompile Include="..\..\Bwee\lua\loadlib.c" />
+    <ClCompile Include="..\..\Bwee\lua\lobject.c" />
+    <ClCompile Include="..\..\Bwee\lua\lopcodes.c" />
+    <ClCompile Include="..\..\Bwee\lua\loslib.c" />
+    <ClCompile Include="..\..\Bwee\lua\lparser.c" />
+    <ClCompile Include="..\..\Bwee\lua\lstate.c" />
+    <ClCompile Include="..\..\Bwee\lua\lstring.c" />
+    <ClCompile Include="..\..\Bwee\lua\lstrlib.c" />
+    <ClCompile Include="..\..\Bwee\lua\ltable.c" />
+    <ClCompile Include="..\..\Bwee\lua\ltablib.c" />
+    <ClCompile Include="..\..\Bwee\lua\ltm.c" />
+    <ClCompile Include="..\..\Bwee\lua\lua.c" />
+    <ClCompile Include="..\..\Bwee\lua\luac.c" />
+    <ClCompile Include="..\..\Bwee\lua\lundump.c" />
+    <ClCompile Include="..\..\Bwee\lua\lvm.c" />
+    <ClCompile Include="..\..\Bwee\lua\lzio.c" />
+    <ClCompile Include="..\..\Bwee\lua\print.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Bwee\lua\lapi.h" />
+    <ClInclude Include="..\..\Bwee\lua\lauxlib.h" />
+    <ClInclude Include="..\..\Bwee\lua\lcode.h" />
+    <ClInclude Include="..\..\Bwee\lua\ldebug.h" />
+    <ClInclude Include="..\..\Bwee\lua\ldo.h" />
+    <ClInclude Include="..\..\Bwee\lua\lfunc.h" />
+    <ClInclude Include="..\..\Bwee\lua\lgc.h" />
+    <ClInclude Include="..\..\Bwee\lua\llex.h" />
+    <ClInclude Include="..\..\Bwee\lua\llimits.h" />
+    <ClInclude Include="..\..\Bwee\lua\lmem.h" />
+    <ClInclude Include="..\..\Bwee\lua\lobject.h" />
+    <ClInclude Include="..\..\Bwee\lua\lopcodes.h" />
+    <ClInclude Include="..\..\Bwee\lua\lparser.h" />
+    <ClInclude Include="..\..\Bwee\lua\lstate.h" />
+    <ClInclude Include="..\..\Bwee\lua\lstring.h" />
+    <ClInclude Include="..\..\Bwee\lua\ltable.h" />
+    <ClInclude Include="..\..\Bwee\lua\ltm.h" />
+    <ClInclude Include="..\..\Bwee\lua\lua.h" />
+    <ClInclude Include="..\..\Bwee\lua\luaconf.h" />
+    <ClInclude Include="..\..\Bwee\lua\lualib.h" />
+    <ClInclude Include="..\..\Bwee\lua\lundump.h" />
+    <ClInclude Include="..\..\Bwee\lua\lvm.h" />
+    <ClInclude Include="..\..\Bwee\lua\lzio.h" />
+  </ItemGroup>
+</Project>
