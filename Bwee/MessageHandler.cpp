@@ -44,3 +44,8 @@ void IRCSession::HandleMotdMessages(IRCMessage& recvData)
 		m_scriptInterface->OnReceivedMotd(getMotd());
 	}
 }
+
+void IRCSession::HandleJoin(IRCMessage& recvData)
+{
+	m_scriptInterface->OnJoinedChannel(recvData.prefix->nickOrServerName.c_str(), recvData.rawParams.c_str());
+}

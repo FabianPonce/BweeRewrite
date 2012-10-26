@@ -4,6 +4,7 @@
 #define MESSAGE_PING							"PING"
 #define MESSAGE_PRIVMSG							"PRIVMSG"
 #define MESSAGE_TOPIC							"TOPIC"
+#define MESSAGE_JOIN							"JOIN"
 
 #define MESSAGE_RAWNUMERIC_001					"001"
 

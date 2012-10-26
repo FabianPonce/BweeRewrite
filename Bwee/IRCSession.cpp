@@ -12,10 +12,12 @@ IRCSession::IRCSession(std::string pServer, uint32 pPort)
 	ADD_MESSAGEHANDLER(MESSAGE_RPL_ENDOFMOTD, &IRCSession::HandleMotdMessages);
 	ADD_MESSAGEHANDLER(MESSAGE_RPL_MOTD, &IRCSession::HandleMotdMessages);
 	ADD_MESSAGEHANDLER(MESSAGE_RPL_MOTDSTART, &IRCSession::HandleMotdMessages);
+	ADD_MESSAGEHANDLER(MESSAGE_JOIN, &IRCSession::HandleJoin);
 
 	m_scriptInterface = NULL;
 	m_hasQuit = false;
 	m_motdIsDone = false;
+	m_currentMessage = NULL;
 
 	m_scriptInterface = new ScriptInterface(this);
 
@@ -89,6 +91,7 @@ void IRCSession::Parse(std::string pMessage)
 	if( trailingMarker != string::npos )
 		message.trailing = pMessage.substr(trailingMarker+2);
 
+	m_currentMessage = &message;
 	HandleMessage(&message);
 }
 

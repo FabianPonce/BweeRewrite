@@ -16,7 +16,8 @@ class IRCSession;
 #define SCRIPT_EVENT_TOPICCHANGED		2
 #define SCRIPT_EVENT_MOTD				3
 #define SCRIPT_EVENT_LUARELOADED		4
-#define SCRIPT_EVENT_MAX				5
+#define SCRIPT_EVENT_CHANNELJOINED		5
+#define SCRIPT_EVENT_MAX				6
 
 class ScriptInterface
 {
@@ -29,12 +30,15 @@ public:
 	void OnConnected();
 	void OnLUAReloaded();
 	void OnReceivedMotd(const char* motd);
+	void OnJoinedChannel(const char* sender, const char* channel);
 
 	std::set<uint16> m_eventHandlers[SCRIPT_EVENT_MAX];
 private:
 	lua_State* m_luaState;
 	IRCSession* m_session;
 	uint32 m_argCount;
+
+	void setPath(const char* path);
 
 	void registerFunctions();
 

@@ -32,7 +32,8 @@ ScriptInterface::ScriptInterface(IRCSession* pSession)
 	
 	luaL_openlibs(m_luaState);
 	
-	
+	setPath("scripts/?.lua");
+
 	registerFunctions();
 
 	int e = luaL_loadfile(m_luaState, "scripts/main.lua");
@@ -60,6 +61,19 @@ ScriptInterface::~ScriptInterface()
 
 	lua_close(m_luaState);
 	m_luaState = NULL;
+}
+
+void ScriptInterface::setPath(const char* path)
+{
+	lua_getglobal( m_luaState, "package" );
+    lua_getfield( m_luaState, -1, "path" ); // get field "path" from table at top of stack (-1)
+    std::string cur_path = lua_tostring( m_luaState, -1 ); // grab path string from top of stack
+    cur_path.append( ";" ); // do your path magic here
+    cur_path.append( path );
+    lua_pop( m_luaState, 1 ); // get rid of the string on the stack we just pushed on line 5
+    lua_pushstring( m_luaState, cur_path.c_str() ); // push the new one
+    lua_setfield( m_luaState, -2, "path" ); // set the field "path" in table at -2 with value at top of stack
+    lua_pop( m_luaState, 1 ); // get rid of package table from top of stack
 }
 
 inline void ScriptInterface::prepareFunction(uint16 func)
@@ -118,6 +132,13 @@ SCRIPTINTERFACE_BEGIN_EVENT_HANDLER(OnReceivedMotd, SCRIPT_EVENT_MOTD, const cha
 }
 SCRIPTINTERFACE_END_EVENT_HANDLER
 
+SCRIPTINTERFACE_BEGIN_EVENT_HANDLER(OnJoinedChannel, SCRIPT_EVENT_CHANNELJOINED, const char* sender, const char* channel)
+{
+	push(sender);
+	push(channel);
+}
+SCRIPTINTERFACE_END_EVENT_HANDLER
+
 int luaSendMessage(lua_State* pState)
 {
 	int argc = lua_gettop(pState);
@@ -154,6 +175,18 @@ int luaJoin(lua_State* pState)
 	return 0;
 }
 
+int luaGetSenderUserHost(lua_State* pState)
+{
+	int argc = lua_gettop(pState);
+	if(argc != 0)
+		return 0;
+
+	IRCSession* sess = m_sessionMap[pState];
+
+	lua_pushstring(pState, sess->getCurrentMessage()->prefix->toUserHostString().c_str());
+	return 1;
+}
+
 int luaQuit(lua_State* pState)
 {
 	int argc = lua_gettop(pState);
@@ -183,7 +216,7 @@ int luaReloadLUA(lua_State* pState)
 {
 	IRCSession* sess = m_sessionMap[pState];
 	sess->ReloadLUA();
-	return 1;
+	return 0;
 }
 
 
@@ -274,6 +307,22 @@ int luaRegisterLUAReloadedHandler(lua_State* pState)
 	return 0;
 }
 
+int luaRegisterChannelJoinedHandler(lua_State* pState)
+{
+	lua_settop(pState, 1);
+
+	const char* typeName = luaL_typename(pState, 1);
+	if( strcmp(typeName, "function") ) // someones being stupid and passing a string or something
+		return 0;
+
+	uint16 function = lua_ref(pState, true);
+
+	m_interfaceMap[pState]->m_eventHandlers[SCRIPT_EVENT_CHANNELJOINED].insert(function);
+
+	lua_pop(pState, lua_gettop(pState));
+	return 0;
+}
+
 void ScriptInterface::registerFunctions()
 {
 	lua_register(m_luaState, "RegisterMessageHandler", luaRegisterMessageHandler);
@@ -281,6 +330,7 @@ void ScriptInterface::registerFunctions()
 	lua_register(m_luaState, "RegisterTopicChangedHandler", luaRegisterTopicChangedHandler);
 	lua_register(m_luaState, "RegisterMotdHandler", luaRegisterMotdHandler);
 	lua_register(m_luaState, "RegisterLUAReloadedHandler", luaRegisterLUAReloadedHandler);
+	lua_register(m_luaState, "RegisterChannelJoinedHandler", luaRegisterChannelJoinedHandler);
 
 	lua_register(m_luaState, "SendMessage", luaSendMessage);
 	lua_register(m_luaState, "Join", luaJoin);
@@ -288,6 +338,7 @@ void ScriptInterface::registerFunctions()
 
 	lua_register(m_luaState, "GetNick", luaGetNick);
 	lua_register(m_luaState, "GetVersionInfo", luaGetVersionInfo);
+	lua_register(m_luaState, "GetSenderUserHostString", luaGetSenderUserHost);
 
 	lua_register(m_luaState, "ReloadLUA", luaReloadLUA);
 }

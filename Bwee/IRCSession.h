@@ -3,7 +3,7 @@
 
 #include "Common.h"
 
-#define SESSION_UPDATE_RESOLUTION 100
+#define SESSION_UPDATE_RESOLUTION 20
 
 #define ADD_MESSAGEHANDLER(code,method) \
 	m_messageMap.insert( make_pair(code, method) );
@@ -49,6 +49,13 @@ struct IRCMessagePrefix
 	{
 		std::stringstream ss;
 		ss << nickOrServerName << "!" << userName << "@" << hostName;
+		return ss.str();
+	}
+
+	std::string toUserHostString()
+	{
+		std::stringstream ss;
+		ss << userName << "@" << hostName;
 		return ss.str();
 	}
 };
@@ -147,6 +154,7 @@ public:
 
 	const char* getNickName() { return m_nickName.c_str(); }
 	const char* getMotd() { return (m_motdIsDone ? m_motd.c_str() : ""); }
+	IRCMessage* getCurrentMessage() { return m_currentMessage; }
 
 	void ReloadLUA();
 
@@ -161,6 +169,9 @@ protected:
 	void HandlePrivmsg(IRCMessage& recvData);
 	void HandleReplyTopic(IRCMessage& recvData);
 	void HandleMotdMessages(IRCMessage& recvData);
+	void HandleJoin(IRCMessage& recvData);
+
+	IRCMessage* m_currentMessage;
 
 	SimpleSocket* m_socket;
 
