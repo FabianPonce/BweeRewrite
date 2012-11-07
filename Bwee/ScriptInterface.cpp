@@ -33,6 +33,7 @@ ScriptInterface::ScriptInterface(IRCSession* pSession)
 	luaL_openlibs(m_luaState);
 	
 	setPath("scripts/?.lua");
+	setPath("scripts/deps/?.lua");
 
 	registerFunctions();
 
